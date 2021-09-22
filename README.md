@@ -1,2 +1,2 @@
 # my-engine
-Chess Engine
+Chess Engine written by Nikhil Arora
