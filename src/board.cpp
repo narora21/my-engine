@@ -9,6 +9,8 @@
 #include "board.h"
 #include <iostream>
 #include <fcntl.h>
+#include "bitops.h"
+#include "fen.h"
 
 /* ---- BOARD CONSTRUCTORS ---- */
 
@@ -87,7 +89,7 @@ Board::Board(const std::string& FEN){
 		delete f;
 	}
 	else{
-		std::cerr << "Unable to construct Board object from FEN string" << std::endl;
+		std::cerr << "Error: unable to construct Board object from FEN string" << std::endl;
 		exit(EXIT_FAILURE);
 	}
 }

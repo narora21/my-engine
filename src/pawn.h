@@ -9,7 +9,6 @@
 #define PAWN_H
 
 #include <cstdint>
-#include "bitops.h"
 #include "constants.h"
 
 
@@ -38,6 +37,10 @@ uint64_t blackDoublePushSources(const uint64_t& blackPawns, const uint64_t& empt
 
 
 /* ---- PAWN ATTACKS ---- */
+// initializes pre-computed pawn attacks
+void computePawnAttacks();
+// lookup pawn attacks
+uint64_t lookupPawnAttacks(const Square& pawn, const Color& color);
 // attacked squares of pawns
 uint64_t whitePawnEastAttacks(const uint64_t& whitePawns);
 uint64_t whitePawnWestAttacks(const uint64_t& whitePawns);

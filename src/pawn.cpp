@@ -7,8 +7,8 @@
 //
 
 #include "pawn.h"
-#include "constants.h"
-
+#include "bitops.h"
+#include <iostream>
 
 
 /* ---- PAWN PUSH TARGETS ---- */
@@ -59,7 +59,35 @@ uint64_t blackDoublePushSources(const uint64_t& blackPawns, const uint64_t& empt
 
 
 /* ---- PAWN ATTACKS ---- */
-
+uint64_t arrPawnAttacks[NUM_COLORS][NUM_SQUARES];
+bool arrPawnAttacksInitialized = false;
+// pre-compute pawn attacks according to square and color
+void computePawnAttacks(){
+   if(!arrPawnAttacksInitialized){
+      for(int i = 0; i < NUM_SQUARES; i++){
+         uint64_t pawn = 1;
+         pawn = pawn << i;
+         arrPawnAttacks[nWhite][i] = whitePawnAnyAttacks(pawn);
+         arrPawnAttacks[nBlack][i] = blackPawnAnyAttacks(pawn);
+      }
+      arrPawnAttacksInitialized = true;
+   }
+}
+// lookup pawn attacks
+uint64_t lookupPawnAttacks(const Square& pawn, const Color& color){
+   if(arrPawnAttacksInitialized){
+      if(pawn == none){
+         std::cerr << "None square provided to pawn attacks lookup" << std::endl;
+         return 0;
+      }
+      return arrPawnAttacks[color][pawn];
+   }
+   else{
+      //error
+      std::cerr << "Error: attempted to access pawn attacks array before array initialization" << std::endl;
+      exit(EXIT_FAILURE);
+   }
+}
 // squares attacked by white pawns
 uint64_t whitePawnEastAttacks(const uint64_t& whitePawns) {
    return noEaOne(whitePawns) & NOT_A_FILE;

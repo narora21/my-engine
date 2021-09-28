@@ -36,6 +36,16 @@ uint64_t westOne(const uint64_t& b);
 uint64_t noWeOne(const uint64_t& b);
 uint64_t soWeOne(const uint64_t& b);
 
+/* ---- KNIGHT STEPS ---- */
+uint64_t noNoEa(const uint64_t& b); 
+uint64_t noEaEa(const uint64_t& b); 
+uint64_t soEaEa(const uint64_t& b); 
+uint64_t soSoEa(const uint64_t& b); 
+uint64_t noNoWe(const uint64_t& b); 
+uint64_t noWeWe(const uint64_t& b); 
+uint64_t soWeWe(const uint64_t& b); 
+uint64_t soSoWe(const uint64_t& b);
+
 /* ---- ROTATE FUNCTIONS ---- */
 //uint64_t rotateLeft (uint64_t b, int s);
 //uint64_t rotateRight(uint64_t b, int s);

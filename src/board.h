@@ -59,9 +59,7 @@ m_num_moves: number of moves in the game, increments after black moves
 
 #include <cstdint>
 #include "constants.h"
-#include "bitops.h"
 #include <string>
-#include "fen.h"
 
 /* Board class: collection of bit boards for each piece */
 
