@@ -7,21 +7,38 @@
 #
 # Makefile used to build project
 
-flags = -Wall -O2
-executable = engine
-exe_path = bin
+CC = g++
+CFLAGS = -Wall -O2
+EXE = engine
+TESTEXE = test
+BIN = bin
+SRC = src
+DFLAGS = -DDEBUG
+
+# all
+all:
+	build
 
 # build the executable
 build:
-	g++ $(flags) -o $(exe_path)/$(executable) src/*.cpp
+	$(CC) $(CFLAGS) -o $(BIN)/$(EXE) $(SRC)/*.cpp
 
 # run the executable
 run:
-	./$(exe_path)/$(executable)
+	./$(BIN)/$(EXE)
 
 # clean up files
 clean:
-	rm -f $(exe_path)/$(executable)
+	rm -f $(BIN)/$(EXE)
+	rm -f $(BIN)/$(TESTEXE)
+
+# build unit tests
+test:
+	$(CC) $(CFLAGS) $(DFLAGS) -o $(BIN)/$(TESTEXE) $(SRC)/*.cpp
+
+# run unit tests
+runtest:
+	./$(BIN)/$(TESTEXE)
 
 # run sanity check
 check:
