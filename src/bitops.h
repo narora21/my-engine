@@ -60,7 +60,7 @@ uint64_t clearLS1b(uint64_t b);
 uint64_t toggleBit(uint64_t b, int n);
 uint64_t setBit(uint64_t b, int n);
 uint64_t clearBit(uint64_t b, int n);
-int getBit(uint64_t b, int n);
+uint64_t getBit(uint64_t b, int n);
 
 /* ---- PRINT FUNCTIONS ---- */
 void printBitBoard(const uint64_t& b);

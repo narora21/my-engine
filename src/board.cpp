@@ -184,7 +184,7 @@ void Board::printBoard(const uint64_t& b) const{
 					break;
 			}
 			if(!occupied)
-				board[i][j] = '*';
+				board[i][j] = EMPTY_CHAR;
 			bitmask = bitmask << 1;
 		}
 	}
@@ -216,34 +216,38 @@ char Board::getPieceChar(const Piece& p, const Color& c) const{
 	// use ascii characters to represent pieces
 	if(c == nWhite){
 		switch(p){
-			case nPawn: pieceChar = 'P'; break;
-			case nKnight: pieceChar = 'N'; break;
-			case nBishop: pieceChar = 'B'; break;
-			case nRook: pieceChar = 'R'; break;
-			case nQueen: pieceChar = 'Q'; break;
-			case nKing: pieceChar = 'K'; break;
-			default: pieceChar = '1';
+			case nPawn: pieceChar = WHITE_PAWN_CHAR; break;
+			case nKnight: pieceChar = WHITE_KNIGHT_CHAR; break;
+			case nBishop: pieceChar = WHITE_BISHOP_CHAR; break;
+			case nRook: pieceChar = WHITE_ROOK_CHAR; break;
+			case nQueen: pieceChar = WHITE_QUEEN_CHAR; break;
+			case nKing: pieceChar = WHITE_KING_CHAR; break;
+			default: pieceChar = EMPTY_CHAR;
 		}
 	}
 	else if(c == nBlack){
 		switch(p){
-			case nPawn: pieceChar = 'p'; break;
-			case nKnight: pieceChar = 'n'; break;
-			case nBishop: pieceChar = 'b'; break;
-			case nRook: pieceChar = 'r'; break;
-			case nQueen: pieceChar = 'q'; break;
-			case nKing: pieceChar = 'k'; break;
-			default: pieceChar = '1';
+			case nPawn: pieceChar = BLACK_PAWN_CHAR; break;
+			case nKnight: pieceChar = BLACK_KNIGHT_CHAR; break;
+			case nBishop: pieceChar = BLACK_BISHOP_CHAR; break;
+			case nRook: pieceChar = BLACK_ROOK_CHAR; break;
+			case nQueen: pieceChar = BLACK_QUEEN_CHAR; break;
+			case nKing: pieceChar = BLACK_KING_CHAR; break;
+			default: pieceChar = EMPTY_CHAR;
 		}
 	}
 	return pieceChar;
 }
 // prints board array
 void Board::printBoardArray(char board[NUM_RANKS][NUM_FILES]) const{
+	std::string border = "+---+---+---+---+---+---+---+---+";
+	std::cout << border << std::endl;
 	for(int i = NUM_RANKS - 1; i >= 0; i--){
+		std::cout << "| ";
 		for(int j = 0; j < NUM_FILES; j++){
 			std::cout << board[i][j];
+			std::cout << " | ";
 		}
-		std::cout << std::endl;
+		std::cout << std::endl << border << std::endl;
 	}	
 }

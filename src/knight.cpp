@@ -18,7 +18,7 @@ bool arrKnightAttacksInitialized = false;
 void computeKnightAttacks(){
 	if(!arrKnightAttacksInitialized){
 		for(int i = 0; i < NUM_SQUARES; i++){
-			uint64_t knight = 1;
+			uint64_t knight = 1ULL;
 			knight = knight << i;
 			arrKnightAttacks[i] = knightAttacks(knight);
 		}

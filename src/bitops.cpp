@@ -44,42 +44,42 @@ int populationCount(uint64_t b){
 }
 // Check if population is 1
 bool popCountIsOne(uint64_t b){
-	return (b != 0 && (b & (b-1)) == 0);
+	return (b != 0ULL && (b & (b-1ULL)) == 0ULL);
 }
 // Check if population is less than or equal to 1
 bool popCountLseOne(uint64_t b){
-	return ((b & (b-1)) == 0);
+	return ((b & (b-1ULL)) == 0ULL);
 }
 // Check if population is more than 1
 int popCountGtOne(uint64_t b){
-	return (b & (b-1)); // pop is gt 1 if this is != 0
+	return (b & (b-1ULL)); // pop is gt 1 if this is != 0
 }
 // Index of least significant 1 bit, -1 if b == 0
 int getLS1bIndex(uint64_t b){
-	return __builtin_ffsll(b)-1;
+	return __builtin_ffsll(b)-1ULL;
 }
 // Resets lest significant 1 bit
 uint64_t clearLS1b(uint64_t b){
-	return b & (b-1);
+	return b & (b-1ULL);
 }
 // Toggles nth bit
 uint64_t toggleBit(uint64_t b, int n){
-	uint64_t bitmask = (1 << n);
+	uint64_t bitmask = (1ULL << n);
 	return b ^ bitmask;
 }
 // Sets nth bit
 uint64_t setBit(uint64_t b, int n){
-	uint64_t bitmask = (1 << n);
+	uint64_t bitmask = (1ULL << n);
 	return b | bitmask;
 }
 // Clears nth bit
 uint64_t clearBit(uint64_t b, int n){
-	uint64_t bitmask = ~(1 << n);
+	uint64_t bitmask = ~(1ULL << n);
 	return b & bitmask;
 }
 // Gets nth bit
-int getBit(uint64_t b, int n){
-	uint64_t bitmask = (1 << n);
+uint64_t getBit(uint64_t b, int n){
+	uint64_t bitmask = (1ULL << n);
 	return b & bitmask;
 }
 

@@ -24,7 +24,7 @@ build:
 	$(CC) $(CFLAGS) -o $(BIN)/$(EXE) $(SRC)/*.cpp
 
 # run the executable
-run:
+run: build
 	./$(BIN)/$(EXE)
 
 # clean up files
@@ -33,11 +33,11 @@ clean:
 	rm -f $(BIN)/$(TESTEXE)
 
 # build unit tests
-test:
+buildtest:
 	$(CC) $(CFLAGS) $(DFLAGS) -o $(BIN)/$(TESTEXE) $(SRC)/*.cpp
 
 # run unit tests
-runtest:
+test: buildtest
 	./$(BIN)/$(TESTEXE)
 
 # run sanity check

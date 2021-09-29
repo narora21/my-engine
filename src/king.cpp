@@ -16,7 +16,7 @@ bool arrKingAttacksInitialized = false;
 void computeKingAttacks(){
 	if(!arrKingAttacksInitialized){
 		for(int i = 0; i < NUM_SQUARES; i++){
-			uint64_t king = 1;
+			uint64_t king = 1ULL;
 			king = king << i;
 			arrKingAttacks[i] = kingAttacks(king);
 		}
