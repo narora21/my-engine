@@ -19,7 +19,7 @@ N - the number of k-bit spaced positions that may be set for 1
 (for bishops N <= 8, k = 9 for NoEa diagonals, k = 7 for NoWe diagonals)
 arrBishopAttacks: bishop_square -> (table: occ -> attack bitmap)
 
-We mask relevant occupancy squares relative to a bishop placement with
+We mask relevant occupancy squares, relative to a bishop placement, with
 a magic number to get the N relavant bits in the bishops way
 We can use this number to hash into the attacks table to get an attack bitboard
 */
@@ -27,9 +27,9 @@ We can use this number to hash into the attacks table to get an attack bitboard
 /* ---- BISHOP ATTACKS ---- */
 // computes magic bishop table for bishop attacks function
 void initMagicBishopTable();
+// performs lookup into pre-initialized bishop attack table
 uint64_t lookupBishopAttacks(const Square& bishop, const uint64_t& occupancy);
+// calculates bishop attack bitmap
 uint64_t calculateBishopAttacks(const Square& bishop, const uint64_t& occupancy);
-
-uint64_t testBishop();
 
 #endif //BISHOP_H

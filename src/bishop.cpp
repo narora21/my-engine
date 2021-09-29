@@ -6,6 +6,7 @@
 //  Copyright © 2021 Nikhil Arora. All rights reserved.
 //
 
+#include "bishop.h"
 #include "bitops.h"
 #include <iostream>
 
@@ -14,8 +15,8 @@
 Magic magicBishopTable[NUM_SQUARES]; // attacks lookup table with perfect hashing
 uint64_t bishopMasks[NUM_SQUARES]; // compute bishop ray masks
 uint64_t arrBishopAttacks[NUM_BISHOP_ATTACKS]; // number of bishop attack and occupancy bitmaps
-int relevantBits[NUM_SQUARES]; // number of bits from a bishops start to the edge of the board
-bool tableInitialized = false; // flag denoting whether attack array was initialized
+int relevantBishopBits[NUM_SQUARES]; // number of bits from a bishops start to the edge of the board
+bool bishopTableInitialized = false; // flag denoting whether attack array was initialized
 // computes the bishop masks and number of relevant occupancy bits
 void computeBishopMasksAndRelevantBits(){
 	for(int i = 0; i < NUM_SQUARES; i++){
@@ -44,15 +45,15 @@ void computeBishopMasksAndRelevantBits(){
 			shifts++;
 		}
 		bishopMasks[i] = bitmask;
-		relevantBits[i] = shifts;
+		relevantBishopBits[i] = shifts;
 
 	}
 }
 // generate all occupancy permutations
-uint64_t* occupancyPermutations(const Square& bishop){
+uint64_t* occupancyBishopPermutations(const Square& bishop){
 	int rank = (int)bishop / 8;
 	int file = (int)bishop % 8;
-	int vision = relevantBits[bishop];
+	int vision = relevantBishopBits[bishop];
 	int size = (1 << vision);
 	uint64_t* perms = new uint64_t[size];
 	if(perms == nullptr){
@@ -125,10 +126,10 @@ uint64_t calculateBishopAttacks(const Square& bishop, const uint64_t& occupancy)
 // fill in the bishop attacks table for fast lookup
 void initBishopAttacks(){
 	for(int i = 0; i < NUM_SQUARES; i++){
-		int vision = relevantBits[i];
+		int vision = relevantBishopBits[i];
 
 		// generate all occupancy permutations
-		uint64_t* perms = occupancyPermutations((Square) i);
+		uint64_t* perms = occupancyBishopPermutations((Square) i);
 
 		// for each occupancy permutation
 		// fill in the attacks table for a bishop on square i
@@ -153,15 +154,15 @@ void initMagicBishopTable(){
 		magicBishopTable[i].attacks = arrBishopAttacks + attackTableOffset;
 		magicBishopTable[i].mask = bishopMasks[i];
 		magicBishopTable[i].magic = bishopMagicNumbers[i];
-		magicBishopTable[i].shift = NUM_SQUARES - relevantBits[i];
-		attackTableOffset += (1 << relevantBits[i]);
+		magicBishopTable[i].shift = NUM_SQUARES - relevantBishopBits[i];
+		attackTableOffset += (1 << relevantBishopBits[i]);
 	}
 	initBishopAttacks();
-	tableInitialized = true;
+	bishopTableInitialized = true;
 }
 // performs a lookup into the pre-initialized bishop attack table
 uint64_t lookupBishopAttacks(const Square& bishop, const uint64_t& occupancy){
-	if(tableInitialized){
+	if(bishopTableInitialized){
 		if(bishop == none){
 			std::cerr << "None square provided to bishop attacks lookup" << std::endl;
 			return 0;
@@ -179,8 +180,3 @@ uint64_t lookupBishopAttacks(const Square& bishop, const uint64_t& occupancy){
 	}
 }
 
-
-uint64_t testBishop(){
-	initMagicBishopTable();
-	return 0ULL;//calculateBishopAttacks(a1, setBit(0ULL, (int)h8));
-}

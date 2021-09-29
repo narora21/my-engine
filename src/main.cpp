@@ -37,9 +37,9 @@ int main(int argc, char* argv[]){
 		//b3.printBoard(lookupKnightAttacks(a1));
 		std::string s4 = "pppppppp/pppppppp/pppppppp/pppppppp/pppppppp/pppppppp/pppppppp/pppppppp w k - 0 1";
 		Board b4(s4);
-		initMagicBishopTable();
+		initMagicRookTable();
 		for(int i = 0; i < 64; i++){
-			uint64_t attacks = lookupBishopAttacks((Square)i, b1.getAllPieces());
+			uint64_t attacks = lookupRookAttacks((Square)i, b1.getAllPieces());
 			b4.printBoard(attacks);
 		}
 		return 0;
