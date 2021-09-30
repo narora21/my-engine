@@ -3,8 +3,6 @@ Chess Engine written by Nikhil Arora
 
 to do:
 write unit tests,
-sliding pieces,
-bishops,
-rooks,
+makeMove castling,
 move gen,
 remove error checking branches to increase speed?

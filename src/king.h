@@ -15,7 +15,7 @@
 // computes the array of king attacks
 void computeKingAttacks();
 // lookup king attacks from pre-initialized array
-uint64_t lookupKingAttacks(const Square& king);
+uint64_t lookupKingAttacks(Square king);
 // calculate king attacks
 uint64_t kingAttacks(const uint64_t& king);
 

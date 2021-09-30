@@ -50,7 +50,7 @@ void computeRookMasksAndRelevantBits(){
 	}
 }
 // generate all occupancy permutations
-uint64_t* occupancyRookPermutations(const Square& rook){
+uint64_t* occupancyRookPermutations(Square rook){
 	int rank = (int)rook / 8;
 	int file = (int)rook % 8;
 	int vision = relevantRookBits[rook];
@@ -93,7 +93,7 @@ uint64_t* occupancyRookPermutations(const Square& rook){
 	return perms;
 }
 // generate attacks from rook and occupancy squares
-uint64_t calculateRookAttacks(const Square& rook, const uint64_t& occupancy){
+uint64_t calculateRookAttacks(Square rook, const uint64_t& occupancy){
 	uint64_t attacks = 0ULL;
 	int rank = rook / 8;
 	int file = rook % 8;
@@ -161,7 +161,7 @@ void initMagicRookTable(){
 	rookTableInitialized = true;
 }
 // performs a lookup into the pre-initialized rook attack table
-uint64_t lookupRookAttacks(const Square& rook, const uint64_t& occupancy){
+uint64_t lookupRookAttacks(Square rook, const uint64_t& occupancy){
 	if(rookTableInitialized){
 		if(rook == none){
 			std::cerr << "None square provided to rook attacks lookup" << std::endl;

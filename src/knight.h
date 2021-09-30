@@ -30,7 +30,7 @@ soWeWe -10   |     |   -6  soEaEa
 // initialize pre-calculated knight attacks
 void computeKnightAttacks();
 // get knight attacks by origin square
-uint64_t lookupKnightAttacks(const Square& knight);
+uint64_t lookupKnightAttacks(Square knight);
 // attacks of multiple knights on one bitboard
 uint64_t knightAttacks(const uint64_t& knights);
 // fill cycle for knights (can be re-applied n times to get all knight-reachable squares within n moves)

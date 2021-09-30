@@ -59,6 +59,7 @@ m_num_moves: number of moves in the game, increments after black moves
 
 #include <cstdint>
 #include "constants.h"
+#include "move.h"
 #include <string>
 
 /* Board class: collection of bit boards for each piece */
@@ -77,30 +78,41 @@ public:
 	Board(const std::string& FEN);
 
   	// functions that get the piece bit boards
-  	uint64_t getPieceBitBoard(const Piece& p, const Color& c) const;
+  	uint64_t getPieceBitBoard(Piece p, Color c) const;
+  	uint64_t getPieceBitBoard(int bitboard_index) const;
   	uint64_t getAllPieces() const;
   	uint64_t getEmptySquares() const;
-  	uint64_t getAllColorPieces(const Color& c) const;
-  	uint64_t getPawns(const Color& c) const;
-  	uint64_t getKnights(const Color& c) const;
-  	uint64_t getBishops(const Color& c) const;
-  	uint64_t getRooks(const Color& c) const;
-  	uint64_t getQueen(const Color& c) const;
-  	uint64_t getKing(const Color& c) const;
+  	uint64_t getAllColorPieces(Color c) const;
+  	uint64_t getPawns(Color c) const;
+  	uint64_t getKnights(Color c) const;
+  	uint64_t getBishops(Color c) const;
+  	uint64_t getRooks(Color c) const;
+  	uint64_t getQueen(Color c) const;
+  	uint64_t getKing(Color c) const;
 
   	// other getters
   	Color getSideToMove() const;
-  	bool getCastleAbility(const int& castle_side) const;
+  	bool getCastleAbility(int castle_side) const;
   	Square getEnPassantTarget() const;
   	int getHalfMoves() const;
   	int getNumMoves() const;
 
+  	// square attacked by function
+  	uint64_t attacksTo(Square sq) const;
+  	bool attacked(Square sq, Color c) const;
+  	bool inCheck(Color c) const;
+
+  	// move making functions
+  	void makeMove(Move m);
+  	void testMakeMove();
+
   	// print functions
   	void printBoard() const;
   	void printBoard(const uint64_t& b) const;
-  	void printColorBitBoard(const Color& c) const;
-  	void printPieceBitBoard(const Piece& p, const Color& c) const;
+  	void printColorBitBoard(Color c) const;
+  	void printPieceBitBoard(Piece p, Color c) const;
   	void printAllBitBoards() const;
+  	void printMembers() const;
   	
 private:
 	/* Array of piece bit boards */
@@ -118,7 +130,7 @@ private:
 
 
 	// gets character for a piece
-	char getPieceChar(const Piece& p, const Color& c) const;
+	char getPieceChar(Piece p, Color c) const;
 	// prints board array
 	void printBoardArray(char board[NUM_RANKS][NUM_FILES]) const;
 };

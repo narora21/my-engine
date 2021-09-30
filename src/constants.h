@@ -59,8 +59,26 @@ enum Square {
 #define NUM_FILES 8
 #define NUM_RANKS 8
 #define NUM_COLORS 2
+#define NUM_PIECES 6
+#define NUM_MOVES 218 // max moves possible in a single chess position
 #define UNIVERSE 0xFFFFFFFFFFFFFFFFULL
 #define EMPTY 0x0000000000000000ULL
+
+// bitboard indices
+#define WHITE_ALL_PIECES_BB 0
+#define BLACK_ALL_PIECES_BB 1
+#define WHITE_PAWNS_BB 2
+#define BLACK_PAWNS_BB 3
+#define WHITE_KNIGHTS_BB 4
+#define BLACK_KNIGHTS_BB 5
+#define WHITE_BISHOPS_BB 6
+#define BLACK_BISHOPS_BB 7
+#define WHITE_ROOKS_BB 8
+#define BLACK_ROOKS_BB 9
+#define WHITE_QUEEN_BB 10
+#define BLACK_QUEEN_BB 11
+#define WHITE_KING_BB 12
+#define BLACK_KING_BB 13
 
 // file constants
 #define A_FILE 0x0101010101010101ULL

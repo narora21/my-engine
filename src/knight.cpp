@@ -26,7 +26,7 @@ void computeKnightAttacks(){
 	}
 }
 // get knight attacks by origin square from pre-initialized array
-uint64_t lookupKnightAttacks(const Square& knight){
+uint64_t lookupKnightAttacks(Square knight){
 	if(arrKnightAttacksInitialized){
 		if(knight == none){
 			std::cerr << "None square provided to knight attacks lookup" << std::endl;

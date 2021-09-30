@@ -12,6 +12,12 @@
 #include "bitops.h"
 #include "fen.h"
 
+#include "pawn.h"
+#include "knight.h"
+#include "bishop.h"
+#include "rook.h"
+#include "king.h"
+
 /* ---- BOARD CONSTRUCTORS ---- */
 
 // default constructor
@@ -95,50 +101,56 @@ Board::Board(const std::string& FEN){
 }
 
 
+
 /* ---- BIT BOARD GETTERS ---- */
 
 // functions that get the piece and color bit boards 
 // returns a bit board for a certain piece and color
-uint64_t Board::getPieceBitBoard(const Piece& p, const Color& c) const{
+uint64_t Board::getPieceBitBoard(Piece p, Color c) const{
 	return m_pieces[(p << 1) + c];
+}
+uint64_t Board::getPieceBitBoard(int bitboard_index) const{
+	return m_pieces[bitboard_index];
 }
 // returns bit board for all pieces on the board
 uint64_t Board::getAllPieces() const{
-	return m_pieces[(nAll << 1) + nWhite] | m_pieces[nAll + nBlack];
+	return m_pieces[WHITE_ALL_PIECES_BB] | m_pieces[BLACK_ALL_PIECES_BB];
 }
 // returns bit board for all empty squares on the board
 uint64_t Board::getEmptySquares() const{
-	return ~(m_pieces[(nAll << 1) + nWhite] | m_pieces[nAll + nBlack]);
+	return ~(m_pieces[WHITE_ALL_PIECES_BB] | m_pieces[BLACK_ALL_PIECES_BB]);
 }
 // returns bit board for all pieces of the same color
-uint64_t Board::getAllColorPieces(const Color& c) const{
+uint64_t Board::getAllColorPieces(Color c) const{
 	return m_pieces[(nAll << 1) + c];
 }
 // following functions return piece set of each piece for a given color
-uint64_t Board::getPawns(const Color& c) const{
+uint64_t Board::getPawns(Color c) const{
 	return m_pieces[(nPawn << 1) + c];
 }
-uint64_t Board::getKnights(const Color& c) const{
+uint64_t Board::getKnights(Color c) const{
 	return m_pieces[(nKnight << 1) + c];
 }
-uint64_t Board::getBishops(const Color& c) const{
+uint64_t Board::getBishops(Color c) const{
 	return m_pieces[(nBishop << 1) + c];
 }
-uint64_t Board::getRooks(const Color& c) const{
+uint64_t Board::getRooks(Color c) const{
 	return m_pieces[(nRook << 1) + c];
 }
-uint64_t Board::getQueen(const Color& c) const{
+uint64_t Board::getQueen(Color c) const{
 	return m_pieces[(nQueen << 1) + c];
 }
-uint64_t Board::getKing(const Color& c) const{
+uint64_t Board::getKing(Color c) const{
 	return m_pieces[(nKing << 1) + c];
 }
+
+
 
 /* ---- OTHER GETTERS ---- */
 Color Board::getSideToMove() const{
 	return m_side;
 }
-bool Board::getCastleAbility(const int& castle_side) const{
+bool Board::getCastleAbility(int castle_side) const{
 	if(castle_side >= 0 && castle_side < 4)
 		return m_castle_ability[castle_side];
 	return false;
@@ -154,8 +166,190 @@ int Board::getNumMoves() const{
 }
 
 
+/* ---- SQUARE ATTACKED BY ---- */
+uint64_t Board::attacksTo(Square sq) const{
+	uint64_t occupied = m_pieces[WHITE_ALL_PIECES_BB] | m_pieces[BLACK_ALL_PIECES_BB];
+	uint64_t knights, kings, bishopsQueens, rooksQueens;
+	knights = m_pieces[WHITE_KNIGHTS_BB] | m_pieces[BLACK_KNIGHTS_BB];
+	kings = m_pieces[WHITE_KING_BB] | m_pieces[BLACK_KING_BB];
+	rooksQueens = bishopsQueens = m_pieces[WHITE_QUEEN_BB] | m_pieces[BLACK_QUEEN_BB];
+	rooksQueens |= m_pieces[WHITE_ROOKS_BB] | m_pieces[BLACK_ROOKS_BB];
+	bishopsQueens |= m_pieces[WHITE_BISHOPS_BB] | m_pieces[BLACK_BISHOPS_BB];
+	return (lookupPawnAttacks(sq, nWhite) & m_pieces[BLACK_PAWNS_BB])
+		| (lookupPawnAttacks(sq, nBlack) & m_pieces[WHITE_PAWNS_BB])
+		| (lookupKnightAttacks(sq) & knights)
+		| (lookupKingAttacks(sq) & kings)
+		| (lookupBishopAttacks(sq, occupied) & bishopsQueens)
+		| (lookupRookAttacks(sq, occupied) & rooksQueens);
+}
+bool Board::attacked(Square sq, Color attacker) const{
+	uint64_t occupied = m_pieces[WHITE_ALL_PIECES_BB] | m_pieces[BLACK_ALL_PIECES_BB];
+	uint64_t pawns = m_pieces[(nPawn << 1) + attacker];
+	if(lookupPawnAttacks(sq, (Color)(attacker ^ 1)) & pawns)
+		return true;
+	uint64_t knights = m_pieces[(nKnight << 1) + attacker];
+	if(lookupKnightAttacks(sq) & knights)
+		return true;
+	uint64_t king = m_pieces[(nKing << 1) + attacker];
+	if(lookupKingAttacks(sq) & king)
+		return true;
+	uint64_t bishopsQueens = m_pieces[(nBishop << 1) + attacker] 
+						   | m_pieces[(nQueen << 1) + attacker];
+	if(lookupBishopAttacks(sq, occupied) & bishopsQueens)
+		return true;
+	uint64_t rooksQueens = m_pieces[(nRook << 1) + attacker]
+						   | m_pieces[(nQueen << 1) + attacker];
+	if(lookupRookAttacks(sq, occupied) & rooksQueens)
+		return true;
+	return false;
+}
+bool Board::inCheck(Color c) const{
+	return attacked((Square)getLS1bIndex(m_pieces[(nKing << 1) + c]), (Color)(c ^ 1));
+}
 
 
+/* ---- MAKE MOVES ---- */
+// makes move regardless of legality
+void Board::makeMove(Move m){
+	unsigned int toSquare = m.getToSquare();
+	unsigned int fromSquare = m.getFromSquare();
+	uint64_t toMask = 1ULL << toSquare;
+	uint64_t fromMask = 1ULL << fromSquare;
+	Color opponent = (Color)(m_side ^ 1);
+	// Exit if there is no piece to move
+	if((m_pieces[(nAll << 1) + m_side] & fromMask) == 0)
+		return;
+
+	// Fetch moved piece and move it
+	Piece movedPiece = nAll;
+	for(int i = 1; i <= NUM_PIECES; i++){
+		// update moved piece
+		if((m_pieces[WHITE_ALL_PIECES_BB + 2*i + m_side] & fromMask) != 0){
+			movedPiece = (Piece) i;
+			m_pieces[WHITE_ALL_PIECES_BB + 2*i + m_side] &= ~fromMask;
+			m_pieces[WHITE_ALL_PIECES_BB + 2*i + m_side] |= toMask;
+			m_pieces[WHITE_ALL_PIECES_BB + m_side] &= ~fromMask;
+			m_pieces[WHITE_ALL_PIECES_BB + m_side] |= toMask;
+		}
+		// erase captured pieces
+		if(m.isCapture()){
+			if((m_pieces[WHITE_ALL_PIECES_BB + 2*i + opponent] & toMask) != 0){
+				m_pieces[WHITE_ALL_PIECES_BB + 2*i + opponent] &= ~toMask;
+				m_pieces[WHITE_ALL_PIECES_BB + opponent] &= ~toMask;
+			}
+		}
+	}
+
+	// Add promoted piece
+	if(m.isPromotion()){
+		Piece promo = m.promotionType();
+		// remove 1st or 8th rank pawn
+		m_pieces[(nPawn << 1) + m_side] &= ~toMask;
+		// add new piece
+		m_pieces[(promo << 1) + m_side] |= toMask;
+	}
+
+	// Remove en passant captured pawn
+	if(m.isEnPassant()){
+		int shift = opponent == nWhite? 8: -8;
+		uint64_t epMask = (1ULL << (m_en_passant_target + shift));
+		m_pieces[(nPawn << 1) + opponent] &= ~epMask;
+		m_pieces[(nAll << 1) + opponent] &= ~epMask;
+	}
+
+	// move rook in case of castling
+	if(m.isKingSideCastle()){
+		if(m_side == nWhite){
+			m_pieces[WHITE_ROOKS_BB] &= ~(1ULL << h1);
+			m_pieces[WHITE_ALL_PIECES_BB] &= ~(1ULL << h1);
+			m_pieces[WHITE_ROOKS_BB] |= (1ULL << f1);
+			m_pieces[WHITE_ALL_PIECES_BB] |= (1ULL << f1);
+		}
+		else{
+			m_pieces[BLACK_ROOKS_BB] &= ~(1ULL << h8);
+			m_pieces[BLACK_ALL_PIECES_BB] &= ~(1ULL << h8);
+			m_pieces[BLACK_ROOKS_BB] |= (1ULL << f8);
+			m_pieces[BLACK_ALL_PIECES_BB] |= (1ULL << f8);
+		}
+	}
+	else if(m.isQueenSideCastle()){
+		if(m_side == nWhite){
+			m_pieces[WHITE_ROOKS_BB] &= ~(1ULL << a1);
+			m_pieces[WHITE_ALL_PIECES_BB] &= ~(1ULL << a1);
+			m_pieces[WHITE_ROOKS_BB] |= (1ULL << d1);
+			m_pieces[WHITE_ALL_PIECES_BB] |= (1ULL << d1);
+		}
+		else{
+			m_pieces[BLACK_ROOKS_BB] &= ~(1ULL << a8);
+			m_pieces[BLACK_ALL_PIECES_BB] &= ~(1ULL << a8);
+			m_pieces[BLACK_ROOKS_BB] |= (1ULL << d8);
+			m_pieces[BLACK_ALL_PIECES_BB] |= (1ULL << d8);
+		}
+	}
+
+	// Update castling rights (if rook is moved/captured or king moves)
+	if(movedPiece == nKing){
+		m_castle_ability[2*m_side] = false;
+		m_castle_ability[2*m_side + 1] = false;
+	}
+	if(((1ULL << a1) & m_pieces[WHITE_ROOKS_BB]) == 0)
+		m_castle_ability[WHITE_QUEEN_SIDE_CASTLE] = false;
+	if(((1ULL << h1) & m_pieces[WHITE_ROOKS_BB]) == 0)
+		m_castle_ability[WHITE_KING_SIDE_CASTLE] = false;
+	if(((1ULL << a8) & m_pieces[BLACK_ROOKS_BB]) == 0)
+		m_castle_ability[BLACK_QUEEN_SIDE_CASTLE] = false;
+	if(((1ULL << h8) & m_pieces[BLACK_ROOKS_BB]) == 0)
+		m_castle_ability[BLACK_KING_SIDE_CASTLE] = false;
+
+	// Set en passant target
+	if(m.isDoublePawnPush()){
+		if(m_side == nWhite){
+			m_en_passant_target = (Square)(toSquare - 8);
+		}
+		else{
+			m_en_passant_target = (Square)(toSquare + 8);
+		}
+	}
+	else
+		m_en_passant_target = none;
+
+	// Increment or reset half move clock counter
+	if(m.isCapture() || movedPiece == nPawn)
+		m_half_moves = 0;
+	else
+		m_half_moves++;
+
+	// Increment num_moves if black just moved
+	if(m_side == nBlack)
+		m_num_moves++;
+
+	// Toggle side to move
+	m_side = opponent;
+	printMembers();
+}
+unsigned int stringToSquare(std::string s){
+	unsigned int file = s[0] - 'a';
+	unsigned int rank = s[1] - '1';
+	return file + 8*rank;
+}
+void Board::testMakeMove(){
+	while(true){
+		printBoard();
+		std::string a, b;
+		std::cout << "Square to move from: ";
+		std::cin >> a;
+		std::cout << std::endl << "Square to move to: ";
+		std::cin >> b;
+
+		unsigned int to, from, flags;
+		to = stringToSquare(b);
+		from = stringToSquare(a);
+		std::cout << std::endl << "Flags: ";
+		std::cin >> flags;
+		Move m(to, from, flags);
+		makeMove(m);
+	}
+}
 
 
 /* ---- PRINT FUNCTIONS ---- */
@@ -191,11 +385,11 @@ void Board::printBoard(const uint64_t& b) const{
 	printBoardArray(board);
 }
 // prints all pieces of one color
-void Board::printColorBitBoard(const Color& c) const{
+void Board::printColorBitBoard(Color c) const{
 	printBoard(getAllColorPieces(c));
 }
 // prints all pieces of one piece type and one color
-void Board::printPieceBitBoard(const Piece& p, const Color& c) const{
+void Board::printPieceBitBoard(Piece p, Color c) const{
 	printBoard(getPieceBitBoard(p, c));
 }
 // prints every bit board
@@ -208,10 +402,22 @@ void Board::printAllBitBoards() const{
 	}
 	printBoard();
 }
+// prints private member variables
+void Board::printMembers() const{
+	std::string side = m_side == nWhite ? "White" : "Black";
+	std::cout << "Side to play: " << side << std::endl;
+	std::cout << "En Passantable square: " << m_en_passant_target << std::endl;
+	std::cout << "Half move clock: " << m_half_moves << std::endl;
+	std::cout << "Number of moves: " << m_num_moves << std::endl;
+	std::cout << "White king side castling ability: " << m_castle_ability[WHITE_KING_SIDE_CASTLE] << std::endl;
+	std::cout << "White queen side castling ability: " << m_castle_ability[WHITE_QUEEN_SIDE_CASTLE] << std::endl;
+	std::cout << "Black king side castling ability: " << m_castle_ability[BLACK_KING_SIDE_CASTLE] << std::endl;
+	std::cout << "Black queen side castling ability: " << m_castle_ability[BLACK_QUEEN_SIDE_CASTLE] << std::endl;
+}
 
 // private helper print functions
 // gets character representing a piece of a color
-char Board::getPieceChar(const Piece& p, const Color& c) const{
+char Board::getPieceChar(Piece p, Color c) const{
 	char pieceChar = '1';
 	// use ascii characters to represent pieces
 	if(c == nWhite){

@@ -74,7 +74,7 @@ void computePawnAttacks(){
    }
 }
 // lookup pawn attacks
-uint64_t lookupPawnAttacks(const Square& pawn, const Color& color){
+uint64_t lookupPawnAttacks(Square pawn, Color color){
    if(arrPawnAttacksInitialized){
       if(pawn == none){
          std::cerr << "None square provided to pawn attacks lookup" << std::endl;

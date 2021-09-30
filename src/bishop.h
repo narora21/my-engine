@@ -28,8 +28,8 @@ We can use this number to hash into the attacks table to get an attack bitboard
 // computes magic bishop table for bishop attacks function
 void initMagicBishopTable();
 // performs lookup into pre-initialized bishop attack table
-uint64_t lookupBishopAttacks(const Square& bishop, const uint64_t& occupancy);
+uint64_t lookupBishopAttacks(Square bishop, const uint64_t& occupancy);
 // calculates bishop attack bitmap
-uint64_t calculateBishopAttacks(const Square& bishop, const uint64_t& occupancy);
+uint64_t calculateBishopAttacks(Square bishop, const uint64_t& occupancy);
 
 #endif //BISHOP_H
