@@ -163,7 +163,7 @@ uint64_t Board::getBishops(Color c) const{
 uint64_t Board::getRooks(Color c) const{
 	return m_pieces[(nRook << 1) + c];
 }
-uint64_t Board::getQueen(Color c) const{
+uint64_t Board::getQueens(Color c) const{
 	return m_pieces[(nQueen << 1) + c];
 }
 uint64_t Board::getKing(Color c) const{
@@ -193,30 +193,6 @@ int Board::getNumMoves() const{
 
 
 /* ---- SQUARE ATTACKED BY ---- */
-void Board::fillOccupiedSquares(){
-	uint64_t pawns = m_pieces[WHITE_PAWNS_BB] | m_pieces[BLACK_PAWNS_BB];
-	uint64_t knights = m_pieces[WHITE_KNIGHTS_BB] | m_pieces[BLACK_KNIGHTS_BB];
-	uint64_t bishops = m_pieces[WHITE_BISHOPS_BB] | m_pieces[BLACK_BISHOPS_BB];
-	uint64_t rooks = m_pieces[WHITE_ROOKS_BB] | m_pieces[BLACK_ROOKS_BB];
-	uint64_t queens = m_pieces[WHITE_QUEEN_BB] | m_pieces[BLACK_QUEEN_BB];
-	uint64_t kings = m_pieces[WHITE_KING_BB] | m_pieces[BLACK_KING_BB];
-	for(int i = 0; i < NUM_SQUARES; i++){
-		if((pawns & (1ULL << i)) != 0)
-			m_occupied_squares[i] = nPawn;
-		else if((knights & (1ULL << i)) != 0)
-			m_occupied_squares[i] = nKnight;
-		else if((bishops & (1ULL << i)) != 0)
-			m_occupied_squares[i] = nBishop;
-		else if((rooks & (1ULL << i)) != 0)
-			m_occupied_squares[i] = nRook;
-		else if((queens & (1ULL << i)) != 0)
-			m_occupied_squares[i] = nQueen;
-		else if((kings & (1ULL << i)) != 0)
-			m_occupied_squares[i] = nKing;
-		else
-			m_occupied_squares[i] = nonePiece;
-	}
-}
 // calculates all attacks (of both colors) to square
 uint64_t Board::attacksTo(Square sq) const{
 	uint64_t occupied = m_pieces[WHITE_ALL_PIECES_BB] | m_pieces[BLACK_ALL_PIECES_BB];
@@ -494,43 +470,32 @@ void Board::unmakeMove(){
 		}
 	}
 }
-unsigned int stringToSquare(std::string s){
-	unsigned int file = s[0] - 'a';
-	unsigned int rank = s[1] - '1';
-	return file + 8*rank;
-}
-void Board::testMakeMove(){
-	const int n = 7;
-	std::string froms[n] = {"a5", "f4", "e1", "h7", "h7", "c2", "f3"};
-	std::string tos[n] = {"b6", "d6", "g1", "h8", "g8", "c4", "h4"};
-	unsigned int flagsl[n] = {5U, 4U, 2U, 11U, 14U, 1U, 0U};
-	for(int i = 0; i < n; i++){
-		printBoard();
-		/*
-		std::string a, b;
-		std::cout << "Square to move from: ";
-		std::cin >> a;
-		std::cout << std::endl << "Square to move to: ";
-		std::cin >> b;*/
 
-		unsigned int to, from;//, flags;
-		to = stringToSquare(tos[i]);
-		from = stringToSquare(froms[i]);
-		//std::cout << std::endl << "Flags: ";
-		//std::cin >> flags;
-		Move m(to, from, flagsl[i]);
-		std::string pause;
-		std::cout << "Making move from " << froms[i] << " to " << tos[i] << std::endl;
-		std::cin >> pause;
-		makeMove(m);
 
-		printBoard();
-
-		std::cout << "unmaking move..." << std::endl;
-		std::cin >> pause;
-		unmakeMove();
+/* ---- CONSTRUCTOR HELPER ---- */
+void Board::fillOccupiedSquares(){
+	uint64_t pawns = m_pieces[WHITE_PAWNS_BB] | m_pieces[BLACK_PAWNS_BB];
+	uint64_t knights = m_pieces[WHITE_KNIGHTS_BB] | m_pieces[BLACK_KNIGHTS_BB];
+	uint64_t bishops = m_pieces[WHITE_BISHOPS_BB] | m_pieces[BLACK_BISHOPS_BB];
+	uint64_t rooks = m_pieces[WHITE_ROOKS_BB] | m_pieces[BLACK_ROOKS_BB];
+	uint64_t queens = m_pieces[WHITE_QUEEN_BB] | m_pieces[BLACK_QUEEN_BB];
+	uint64_t kings = m_pieces[WHITE_KING_BB] | m_pieces[BLACK_KING_BB];
+	for(int i = 0; i < NUM_SQUARES; i++){
+		if((pawns & (1ULL << i)) != 0)
+			m_occupied_squares[i] = nPawn;
+		else if((knights & (1ULL << i)) != 0)
+			m_occupied_squares[i] = nKnight;
+		else if((bishops & (1ULL << i)) != 0)
+			m_occupied_squares[i] = nBishop;
+		else if((rooks & (1ULL << i)) != 0)
+			m_occupied_squares[i] = nRook;
+		else if((queens & (1ULL << i)) != 0)
+			m_occupied_squares[i] = nQueen;
+		else if((kings & (1ULL << i)) != 0)
+			m_occupied_squares[i] = nKing;
+		else
+			m_occupied_squares[i] = nonePiece;
 	}
-	printBoard();
 }
 
 

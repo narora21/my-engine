@@ -62,8 +62,8 @@ void generateMoves(const Board& position, std::vector<Move>& pseudo_legals){
 	}
 	else{
 		// pawn bitboards
-		uint64_t s_s = whiteSinglePushSources(pawns, empty_board);
-		uint64_t s_t = whiteSinglePushTargets(pawns, empty_board);
+		uint64_t s_s = blackSinglePushSources(pawns, empty_board);
+		uint64_t s_t = blackSinglePushTargets(pawns, empty_board);
 		single_sources = s_s & NOT_RANK_2;
 		single_targets = s_t & NOT_RANK_1;
 		promo_sources = s_s & RANK_2;
@@ -117,12 +117,14 @@ void generateMoves(const Board& position, std::vector<Move>& pseudo_legals){
 		pawn_attackers = clearLS1b(pawn_attackers);
 	}
 	// en passant
-	ep_attacker = lookupPawnAttacks(ep_square, opponent_color) & pawns;
-	while(ep_attacker){
-		from = getLS1bIndex(ep_attacker);
-		to = (unsigned int) ep_square;
-		pseudo_legals.push_back(Move(to, from, EN_PASSANT_CODE));
-		ep_attacker = clearLS1b(ep_attacker);
+	if(ep_square != noneSquare){
+		ep_attacker = lookupPawnAttacks(ep_square, opponent_color) & pawns;
+		while(ep_attacker){
+			from = getLS1bIndex(ep_attacker);
+			to = (unsigned int) ep_square;
+			pseudo_legals.push_back(Move(to, from, EN_PASSANT_CODE));
+			ep_attacker = clearLS1b(ep_attacker);
+		}
 	}
 	// promo
 	while(promo_sources){
@@ -255,22 +257,25 @@ void generateMoves(const Board& position, std::vector<Move>& pseudo_legals){
 	
 
 	/* ---- QUEEN MOVES ---- */
-	uint64_t queen = position.getQueen(side_to_move);
-	from = getLS1bIndex(queen);
-	uint64_t queen_moves = lookupRookAttacks((Square) from, all_pieces) |
-						   lookupBishopAttacks((Square) from, all_pieces);
-	uint64_t quiet_queen_moves = queen_moves & empty_board;
-	uint64_t queen_captures = queen_moves & opponent_pieces;
-	// moves
-	while(quiet_queen_moves){
-		to = getLS1bIndex(quiet_queen_moves);
-		pseudo_legals.push_back(Move(to, from, QUIET_MOVE_CODE));
-		quiet_queen_moves = clearLS1b(quiet_queen_moves);
-	}
-	// captures
-	while(queen_captures){
-		to = getLS1bIndex(queen_captures);
-		pseudo_legals.push_back(Move(to, from, CAPTURE_CODE));
-		queen_captures = clearLS1b(queen_captures);
+	uint64_t queens = position.getQueens(side_to_move);
+	while(queens){
+		from = getLS1bIndex(queens);
+		uint64_t queen_moves = lookupRookAttacks((Square) from, all_pieces) |
+							   lookupBishopAttacks((Square) from, all_pieces);
+		uint64_t quiet_queen_moves = queen_moves & empty_board;
+		uint64_t queen_captures = queen_moves & opponent_pieces;
+		// moves
+		while(quiet_queen_moves){
+			to = getLS1bIndex(quiet_queen_moves);
+			pseudo_legals.push_back(Move(to, from, QUIET_MOVE_CODE));
+			quiet_queen_moves = clearLS1b(quiet_queen_moves);
+		}
+		// captures
+		while(queen_captures){
+			to = getLS1bIndex(queen_captures);
+			pseudo_legals.push_back(Move(to, from, CAPTURE_CODE));
+			queen_captures = clearLS1b(queen_captures);
+		}
+		queens = clearLS1b(queens);
 	}
 }

@@ -91,7 +91,7 @@ public:
   	uint64_t getKnights(Color c) const;
   	uint64_t getBishops(Color c) const;
   	uint64_t getRooks(Color c) const;
-  	uint64_t getQueen(Color c) const;
+  	uint64_t getQueens(Color c) const;
   	uint64_t getKing(Color c) const;
 
   	// other getters
@@ -102,7 +102,6 @@ public:
   	int getNumMoves() const;
 
   	// square attacked by function
-  	void fillOccupiedSquares();
   	uint64_t attacksTo(Square sq) const;
   	bool attacked(Square sq, Color attacker) const;
   	bool inCheck(Color c) const;
@@ -110,7 +109,6 @@ public:
   	// move making functions
   	void makeMove(const Move& m);
   	void unmakeMove();
-  	void testMakeMove();
 
   	// print functions
   	void printBoard() const;
@@ -139,6 +137,8 @@ private:
 	Piece m_occupied_squares[NUM_SQUARES];
 
 
+	// constructor helper function
+	void fillOccupiedSquares();
 	// gets character for a piece
 	char getPieceChar(Piece p, Color c) const;
 	// prints board array
