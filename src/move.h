@@ -69,4 +69,21 @@ private:
 	unsigned int m_move;
 };
 
+
+/* ---- LEGALITY TESTS ---- */
+void initInBetweens();
+uint64_t inBetween(Square from, Square to);
+
+
+/* ---- TRANSITION INFO ---- */
+typedef struct{
+  unsigned int to;
+  unsigned int from;
+  unsigned int flags;
+  Square en_passant_target;
+  int half_moves;
+  Piece captured;
+  bool castling_ability[4];
+} Transition;
+
 #endif //MOVE_H

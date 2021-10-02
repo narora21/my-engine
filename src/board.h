@@ -60,6 +60,7 @@ m_num_moves: number of moves in the game, increments after black moves
 #include <cstdint>
 #include "constants.h"
 #include "move.h"
+#include <stack>
 #include <string>
 
 /* Board class: collection of bit boards for each piece */
@@ -76,6 +77,9 @@ public:
 	Board(const Board& other);
 	// constructs board from FEN strings
 	Board(const std::string& FEN);
+
+	// operators
+	bool operator==(Board rval) const;
 
   	// functions that get the piece bit boards
   	uint64_t getPieceBitBoard(Piece p, Color c) const;
@@ -98,17 +102,19 @@ public:
   	int getNumMoves() const;
 
   	// square attacked by function
+  	void fillOccupiedSquares();
   	uint64_t attacksTo(Square sq) const;
-  	bool attacked(Square sq, Color c) const;
+  	bool attacked(Square sq, Color attacker) const;
   	bool inCheck(Color c) const;
 
   	// move making functions
-  	void makeMove(Move m);
+  	void makeMove(const Move& m);
+  	void unmakeMove();
   	void testMakeMove();
 
   	// print functions
   	void printBoard() const;
-  	void printBoard(const uint64_t& b) const;
+  	void printBoard(uint64_t b) const;
   	void printColorBitBoard(Color c) const;
   	void printPieceBitBoard(Piece p, Color c) const;
   	void printAllBitBoards() const;
@@ -127,6 +133,10 @@ private:
 	int m_half_moves;
 	/* Full Move Counter */
 	int m_num_moves;
+	/* Move history */
+	std::stack<Transition> m_move_history; 
+	/* Type of piece in each square */
+	Piece m_occupied_squares[NUM_SQUARES];
 
 
 	// gets character for a piece

@@ -12,6 +12,7 @@
 #include "bishop.h"
 #include "rook.h"
 #include "king.h"
+#include "move.h"
 #include <iostream>
 
 // initialize engine pre-requisites
@@ -22,10 +23,11 @@ bool engineIsInitialized(){
 void init(){
 	std::cout << "Initializing engine..." << std::endl;
 	// compute piece attack tables
-	computePawnAttacks();
-	computeKnightAttacks();
+	initPawnAttacks();
+	initKnightAttacks();
 	initMagicBishopTable();
 	initMagicRookTable();
-	computeKingAttacks();
+	initKingAttacks();
+	initInBetweens();
 	engineInitialized = true;
 }

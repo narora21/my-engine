@@ -28,14 +28,14 @@ soWeWe -10   |     |   -6  soEaEa
 
 /* ---- KNIGHT PATTERN ---- */
 // initialize pre-calculated knight attacks
-void computeKnightAttacks();
+void initKnightAttacks();
 // get knight attacks by origin square
 uint64_t lookupKnightAttacks(Square knight);
 // attacks of multiple knights on one bitboard
-uint64_t knightAttacks(const uint64_t& knights);
+uint64_t knightAttacks(uint64_t knights);
 // fill cycle for knights (can be re-applied n times to get all knight-reachable squares within n moves)
-uint64_t knightFill(const uint64_t& knights);
+uint64_t knightFill(uint64_t knights);
 // target squares of all knight forks
-uint64_t forkTargetSquare(const uint64_t& targets);
+uint64_t forkTargetSquare(uint64_t targets);
 
 #endif //KNIGHT_H

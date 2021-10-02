@@ -27,24 +27,24 @@ Movement is defined by the following compass rose:
 #include <stdlib.h>
 
 /* ---- MOVE ONE STEP ---- */
-uint64_t southOne(const uint64_t& b);
-uint64_t northOne(const uint64_t& b);
-uint64_t eastOne(const uint64_t& b);
-uint64_t noEaOne(const uint64_t& b);
-uint64_t soEaOne(const uint64_t& b);
-uint64_t westOne(const uint64_t& b);
-uint64_t noWeOne(const uint64_t& b);
-uint64_t soWeOne(const uint64_t& b);
+uint64_t southOne(uint64_t b);
+uint64_t northOne(uint64_t b);
+uint64_t eastOne(uint64_t b);
+uint64_t noEaOne(uint64_t b);
+uint64_t soEaOne(uint64_t b);
+uint64_t westOne(uint64_t b);
+uint64_t noWeOne(uint64_t b);
+uint64_t soWeOne(uint64_t b);
 
 /* ---- KNIGHT STEPS ---- */
-uint64_t noNoEa(const uint64_t& b); 
-uint64_t noEaEa(const uint64_t& b); 
-uint64_t soEaEa(const uint64_t& b); 
-uint64_t soSoEa(const uint64_t& b); 
-uint64_t noNoWe(const uint64_t& b); 
-uint64_t noWeWe(const uint64_t& b); 
-uint64_t soWeWe(const uint64_t& b); 
-uint64_t soSoWe(const uint64_t& b);
+uint64_t noNoEa(uint64_t b); 
+uint64_t noEaEa(uint64_t b); 
+uint64_t soEaEa(uint64_t b); 
+uint64_t soSoEa(uint64_t b); 
+uint64_t noNoWe(uint64_t b); 
+uint64_t noWeWe(uint64_t b); 
+uint64_t soWeWe(uint64_t b); 
+uint64_t soSoWe(uint64_t b);
 
 /* ---- ROTATE FUNCTIONS ---- */
 //uint64_t rotateLeft (uint64_t b, int s);
@@ -63,6 +63,6 @@ uint64_t clearBit(uint64_t b, int n);
 uint64_t getBit(uint64_t b, int n);
 
 /* ---- PRINT FUNCTIONS ---- */
-void printBitBoard(const uint64_t& b);
+void printBitBoard(uint64_t b);
 
 #endif // BITOPS_H

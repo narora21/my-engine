@@ -15,7 +15,7 @@
 uint64_t arrKnightAttacks[NUM_SQUARES];
 bool arrKnightAttacksInitialized = false;
 // computes knight attacks array
-void computeKnightAttacks(){
+void initKnightAttacks(){
 	if(!arrKnightAttacksInitialized){
 		for(int i = 0; i < NUM_SQUARES; i++){
 			uint64_t knight = 1ULL;
@@ -28,7 +28,7 @@ void computeKnightAttacks(){
 // get knight attacks by origin square from pre-initialized array
 uint64_t lookupKnightAttacks(Square knight){
 	if(arrKnightAttacksInitialized){
-		if(knight == none){
+		if(knight == noneSquare){
 			std::cerr << "None square provided to knight attacks lookup" << std::endl;
 			return 0;
 		}
@@ -41,7 +41,7 @@ uint64_t lookupKnightAttacks(Square knight){
 	}
 }
 // calculates attacks of multiple knights bitboard
-uint64_t knightAttacks(const uint64_t& knights){
+uint64_t knightAttacks(uint64_t knights){
 	uint64_t l1 = (knights >> 1) & NOT_H_FILE;
    	uint64_t l2 = (knights >> 2) & NOT_GH_FILES;
    	uint64_t r1 = (knights << 1) & NOT_A_FILE;
@@ -51,11 +51,11 @@ uint64_t knightAttacks(const uint64_t& knights){
    	return (h1 << 16) | (h1 >> 16) | (h2 << 8) | (h2 >> 8);
 }
 // fill cycle for knights (can be re-applied n times to get all knight-reachable squares within n moves)
-uint64_t knightFill(const uint64_t& knights) {
+uint64_t knightFill(uint64_t knights) {
 	return knightAttacks(knights) | knights;
 }
 // target squares of all knight forks
-uint64_t forkTargetSquare(const uint64_t& targets) {
+uint64_t forkTargetSquare(uint64_t targets) {
    uint64_t west, east, attacks, forks;
    east   = eastOne (targets);
    west   = westOne (targets);

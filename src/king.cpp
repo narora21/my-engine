@@ -13,7 +13,7 @@
 uint64_t arrKingAttacks[NUM_SQUARES];
 bool arrKingAttacksInitialized = false;
 // computes king attacks array
-void computeKingAttacks(){
+void initKingAttacks(){
 	if(!arrKingAttacksInitialized){
 		for(int i = 0; i < NUM_SQUARES; i++){
 			uint64_t king = 1ULL;
@@ -26,7 +26,7 @@ void computeKingAttacks(){
 // get king attacks by origin square from pre-initialized array
 uint64_t lookupKingAttacks(Square king){
 	if(arrKingAttacksInitialized){
-		if(king == none){
+		if(king == noneSquare){
 			std::cerr << "None square provided to king attacks lookup" << std::endl;
 			return 0;
 		}
@@ -39,7 +39,7 @@ uint64_t lookupKingAttacks(Square king){
 	}
 }
 // calculates king attacks
-uint64_t kingAttacks(const uint64_t& king){
+uint64_t kingAttacks(uint64_t king){
 	uint64_t attacks = eastOne(king) | westOne(king);
 	attacks |= northOne(attacks) | southOne(attacks);
 	attacks |= northOne(king) | southOne(king);

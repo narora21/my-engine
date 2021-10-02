@@ -38,7 +38,8 @@ enum Piece{
   nBishop,
   nRook,
   nQueen,
-  nKing
+  nKing,
+  nonePiece = -1
 };
 enum Square {
   a1, b1, c1, d1, e1, f1, g1, h1,
@@ -49,7 +50,7 @@ enum Square {
   a6, b6, c6, d6, e6, f6, g6, h6,
   a7, b7, c7, d7, e7, f7, g7, h7,
   a8, b8, c8, d8, e8, f8, g8, h8,
-  none = -1
+  noneSquare = -1
 };
 
 
@@ -110,6 +111,8 @@ enum Square {
 #define RANK_8 0xFF00000000000000ULL
 
 #define NOT_RANK_8 0x00FFFFFFFFFFFFFFULL
+#define NOT_RANK_7 0xFF00FFFFFFFFFFFFULL
+#define NOT_RANK_2 0xFFFFFFFFFFFF00FFULL
 #define NOT_RANK_1 0xFFFFFFFFFFFFFF00ULL
 
 // diagonal constants
@@ -145,6 +148,22 @@ enum Square {
 #define BLACK_KING_SIDE_CASTLE 2
 #define BLACK_QUEEN_SIDE_CASTLE 3
 
+/* ---- MOVE FLAG CODES ---- */
+#define QUIET_MOVE_CODE 0U
+#define DOUBLE_PAWN_MOVE_CODE 1U
+#define KINGISDE_CASTLE_CODE 2U
+#define QUEENSIDE_CASTLE_CODE 3U
+#define CAPTURE_CODE 4U
+#define EN_PASSANT_CODE 5U
+#define KNIGHT_PROMO_CODE 8U
+#define BISHOP_PROMO_CODE 9U
+#define ROOK_PROMO_CODE 10U
+#define QUEEN_PROMO_CODE 11U
+#define KNIGHT_PROMO_CAPTURE_CODE 12U
+#define BISHOP_PROMO_CAPTURE_CODE 13U
+#define ROOK_PROMO_CAPTURE_CODE 14U
+#define QUEEN_PROMO_CAPTURE_CODE 15U
+
 /* ---- MATERIAL POINT VALUES ---- */
 #define PAWN_VALUE 1
 #define KNIGHT_VALUE 3
@@ -167,7 +186,6 @@ enum Square {
 #define BLACK_QUEEN_CHAR 'q'
 #define BLACK_KING_CHAR 'k'
 
-
 /* ---- MAGIC NUMBERS ---- */
 typedef struct{
   uint64_t* attacks; // pointer to attack_table for each particular square
@@ -175,6 +193,9 @@ typedef struct{
   uint64_t magic; // magic 64-bit factor
   int shift; // shift right value
 } Magic;
+
+
+// attack tables for bishops and rooks combined ~840 KiB
 
 // size of bishop attacks array = SUM(2^(n_i)) 
 // where n_i = # of relevant occupancy squares relative to a bishop on square i (0 <= i <= 63)

@@ -93,7 +93,7 @@ uint64_t* occupancyBishopPermutations(Square bishop){
 	return perms;
 }
 // generate attacks from bishop and occupancy squares
-uint64_t calculateBishopAttacks(Square bishop, const uint64_t& occupancy){
+uint64_t calculateBishopAttacks(Square bishop, uint64_t occupancy){
 	uint64_t attacks = 0ULL;
 	int rank = bishop / 8;
 	int file = bishop % 8;
@@ -161,9 +161,9 @@ void initMagicBishopTable(){
 	bishopTableInitialized = true;
 }
 // performs a lookup into the pre-initialized bishop attack table
-uint64_t lookupBishopAttacks(Square bishop, const uint64_t& occupancy){
+uint64_t lookupBishopAttacks(Square bishop, uint64_t occupancy){
 	if(bishopTableInitialized){
-		if(bishop == none){
+		if(bishop == noneSquare){
 			std::cerr << "None square provided to bishop attacks lookup" << std::endl;
 			return 0;
 		}

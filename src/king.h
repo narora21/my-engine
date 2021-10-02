@@ -13,10 +13,10 @@
 
 /* ---- KING ATTACKS ---- */
 // computes the array of king attacks
-void computeKingAttacks();
+void initKingAttacks();
 // lookup king attacks from pre-initialized array
 uint64_t lookupKingAttacks(Square king);
 // calculate king attacks
-uint64_t kingAttacks(const uint64_t& king);
+uint64_t kingAttacks(uint64_t king);
 
 #endif //KING_H

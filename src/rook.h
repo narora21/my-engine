@@ -29,9 +29,9 @@ We can use this number to hash into the attacks table to get an attack bitboard
 // computes magic rook table for rook attacks function
 void initMagicRookTable();
 // performs lookup into pre-initialized rook attack table
-uint64_t lookupRookAttacks(Square rook, const uint64_t& occupancy);
+uint64_t lookupRookAttacks(Square rook, uint64_t occupancy);
 // calculates rook attack bitmap
-uint64_t calculateRookAttacks(Square rook, const uint64_t& occupancy);
+uint64_t calculateRookAttacks(Square rook, uint64_t occupancy);
 
 
 #endif //ROOK_H

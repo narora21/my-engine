@@ -11,7 +11,8 @@
 
 #include "board.h"
 #include "move.h"
+#include <vector>
 
-int generateMoves(const Board& position, Move legal_moves[NUM_MOVES]);
+void generateMoves(const Board& position, std::vector<Move>& pseudo_legals);
 
 #endif //MOVEGEN_H

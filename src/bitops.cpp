@@ -13,24 +13,24 @@
 
 
 /* ---- MOVE ONE STEP ---- */
-uint64_t southOne(const uint64_t& b) {return b >> 8;}
-uint64_t northOne(const uint64_t& b) {return b << 8;}
-uint64_t eastOne(const uint64_t& b) {return (b << 1) & NOT_A_FILE;}
-uint64_t noEaOne(const uint64_t& b) {return (b << 9) & NOT_A_FILE;}
-uint64_t soEaOne(const uint64_t& b) {return (b >> 7) & NOT_A_FILE;}
-uint64_t westOne(const uint64_t& b) {return (b >> 1) & NOT_H_FILE;}
-uint64_t noWeOne(const uint64_t& b) {return (b << 7) & NOT_H_FILE;}
-uint64_t soWeOne(const uint64_t& b) {return (b >> 9) & NOT_H_FILE;}
+uint64_t southOne(uint64_t b) {return b >> 8;}
+uint64_t northOne(uint64_t b) {return b << 8;}
+uint64_t eastOne(uint64_t b) {return (b << 1) & NOT_A_FILE;}
+uint64_t noEaOne(uint64_t b) {return (b << 9) & NOT_A_FILE;}
+uint64_t soEaOne(uint64_t b) {return (b >> 7) & NOT_A_FILE;}
+uint64_t westOne(uint64_t b) {return (b >> 1) & NOT_H_FILE;}
+uint64_t noWeOne(uint64_t b) {return (b << 7) & NOT_H_FILE;}
+uint64_t soWeOne(uint64_t b) {return (b >> 9) & NOT_H_FILE;}
 
 /* ---- KNIGHT STEPS ---- */
-uint64_t noNoEa(const uint64_t& b) {return (b << 17) & NOT_A_FILE;}
-uint64_t noEaEa(const uint64_t& b) {return (b << 10) & NOT_AB_FILES;}
-uint64_t soEaEa(const uint64_t& b) {return (b >>  6) & NOT_AB_FILES;}
-uint64_t soSoEa(const uint64_t& b) {return (b >> 15) & NOT_A_FILE;}
-uint64_t noNoWe(const uint64_t& b) {return (b << 15) & NOT_H_FILE;}
-uint64_t noWeWe(const uint64_t& b) {return (b <<  6) & NOT_GH_FILES;}
-uint64_t soWeWe(const uint64_t& b) {return (b >> 10) & NOT_GH_FILES;}
-uint64_t soSoWe(const uint64_t& b) {return (b >> 17) & NOT_H_FILE;}
+uint64_t noNoEa(uint64_t b) {return (b << 17) & NOT_A_FILE;}
+uint64_t noEaEa(uint64_t b) {return (b << 10) & NOT_AB_FILES;}
+uint64_t soEaEa(uint64_t b) {return (b >>  6) & NOT_AB_FILES;}
+uint64_t soSoEa(uint64_t b) {return (b >> 15) & NOT_A_FILE;}
+uint64_t noNoWe(uint64_t b) {return (b << 15) & NOT_H_FILE;}
+uint64_t noWeWe(uint64_t b) {return (b <<  6) & NOT_GH_FILES;}
+uint64_t soWeWe(uint64_t b) {return (b >> 10) & NOT_GH_FILES;}
+uint64_t soSoWe(uint64_t b) {return (b >> 17) & NOT_H_FILE;}
 
 /* ---- ROTATE FUNCTIONS ---- */
 //uint64_t rotateLeft (uint64_t b, int s) {return _rotl64(b, s);}
@@ -58,7 +58,7 @@ int popCountGtOne(uint64_t b){
 int getLS1bIndex(uint64_t b){
 	return __builtin_ffsll(b)-1ULL;
 }
-// Resets lest significant 1 bit
+// Resets least significant 1 bit
 uint64_t clearLS1b(uint64_t b){
 	return b & (b-1ULL);
 }
@@ -84,7 +84,7 @@ uint64_t getBit(uint64_t b, int n){
 }
 
 /* ---- PRINT FUNCTIONS ---- */
-void printBitBoard(const uint64_t& b){
+void printBitBoard(uint64_t b){
 	for(int i = NUM_RANKS - 1; i >= 0; i--){
 		for(int j = 0; j < NUM_FILES; j++){
 			int shift = i*NUM_RANKS + j;
