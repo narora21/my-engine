@@ -21,6 +21,7 @@ all:
 
 # build the executable
 build:
+	mkdir -p $(BIN)
 	$(CC) $(CFLAGS) -o $(BIN)/$(EXE) $(SRC)/*.cpp
 
 # run the executable
@@ -34,6 +35,7 @@ clean:
 
 # build unit tests
 buildtest:
+	mkdir -p $(BIN)
 	$(CC) $(CFLAGS) $(DFLAGS) -o $(BIN)/$(TESTEXE) $(SRC)/*.cpp
 
 # run unit tests

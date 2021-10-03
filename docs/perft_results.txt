@@ -1,0 +1,61 @@
+g++ -Wall -O2 -DDEBUG -o bin/test src/*.cpp
+./bin/test
+Initializing engine...
+Running unit tests...
+Running Perft with initial position: 
+Perft (depth=1): 20 (0 s)
+Perft (depth=2): 400 (0 s)
+Perft (depth=3): 8902 (0 s)
+Perft (depth=4): 197281 (0.015 s)
+Perft (depth=5): 4865609 (0.355 s)
+Perft (depth=6): 119060324 (13.14 s)
+Perft (depth=7): 3195901860 (325.406 s)
+Average number of nodes processed per second: ~9.82259 Mnps
+
+Running Perft with test position 2:
+Perft (depth=1): 48 (0 s)
+Perft (depth=2): 2039 (0 s)
+Perft (depth=3): 97862 (0.006 s)
+Perft (depth=4): 4085603 (0.32 s)
+Perft (depth=5): 193690690 (20.582 s)
+Perft (depth=6): 8031647685 (870.181 s)
+Average number of nodes processed per second: ~9.23628 Mnps
+
+Running Perft with test position 3: 
+Perft (depth=1): 14 (0 s)
+Perft (depth=2): 191 (0 s)
+Perft (depth=3): 2812 (0 s)
+Perft (depth=4): 43238 (0.003 s)
+Perft (depth=5): 674624 (0.062 s)
+Perft (depth=6): 11030083 (1.092 s)
+Perft (depth=7): 178633661 (20.499 s)
+Perft (depth=8): 3009794393 (351.948 s)
+Average number of nodes processed per second: ~8.57957 Mnps
+
+Running Perft with test position 4: 
+Perft (depth=1): 6 (0 s)
+Perft (depth=2): 264 (0 s)
+Perft (depth=3): 9467 (0 s)
+Perft (depth=4): 422333 (0.038 s)
+Perft (depth=5): 15833292 (1.562 s)
+Perft (depth=6): 706045033 (69.276 s)
+Average number of nodes processed per second: ~10.3187 Mnps
+
+Running Perft with test position 5: 
+Perft (depth=1): 44 (0 s)
+Perft (depth=2): 1486 (0 s)
+Perft (depth=3): 62379 (0.005 s)
+Perft (depth=4): 2103487 (0.242 s)
+Perft (depth=5): 89941194 (8.868 s)
+Average number of nodes processed per second: ~10.2343 Mnps
+
+Running Perft with test position 6: 
+Perft (depth=1): 46 (0 s)
+Perft (depth=2): 2079 (0 s)
+Perft (depth=3): 89890 (0.007 s)
+Perft (depth=4): 3894594 (0.351 s)
+Perft (depth=5): 164075551 (15.489 s)
+Perft (depth=6): 6923051137 (636.515 s)
+Average number of nodes processed per second: ~10.8759 Mnps
+
+Tests executed in 2335 s

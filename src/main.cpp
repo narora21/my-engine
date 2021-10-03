@@ -16,7 +16,7 @@ int main(int argc, char* argv[]){
 	init();
 	#ifdef DEBUG
 		std::cout << "Running unit tests..." << std::endl;
-		testPerft1();
+		testPerftAll();
 		return 0;
 	#endif // DEBUG END
 

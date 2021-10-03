@@ -1,4 +1,4 @@
 # my-engine
 Chess Engine written by Nikhil Arora
 
-Project status: debugging move generation using perft results
+Project status: Finished perft testing, starting evaluation and search method development
