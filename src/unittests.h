@@ -20,8 +20,16 @@
 /* ---- PAWN TESTS ---- */
 
 
-/* ---- HELPER FUNCTIONS ---- */
-std::string squareToString(unsigned int s);
-unsigned int stringToSquare(std::string s);
+/* ---- PERFT TESTS ---- */
+void testPerft1();
+void testPerft2();
+void testPerft3();
+void testPerft4();
+void testPerft5();
+void testPerft6();
+void testPerftAll();
+void testDetailedPerft1();
+void testDetailedPerft2();
+void testCountPerft2();
 
 #endif // UNITTESTS_H

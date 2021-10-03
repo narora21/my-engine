@@ -604,3 +604,19 @@ void Board::printBoardArray(char board[NUM_RANKS][NUM_FILES]) const{
 		std::cout << std::endl << border << std::endl;
 	}	
 }
+
+
+/* ---- HELPER FUNCTIONS ---- */
+std::string squareToString(unsigned int s){
+	unsigned int rank = s / 8;
+	unsigned int file = s % 8;
+	std::string ret = "";
+	ret.push_back('a' + file);
+	ret.push_back('1' + rank);
+	return ret;
+}
+unsigned int stringToSquare(std::string s){
+	unsigned int file = s[0] - 'a';
+	unsigned int rank = s[1] - '1';
+	return file + 8*rank;
+}

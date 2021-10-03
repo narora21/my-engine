@@ -44,6 +44,7 @@ public:
 	void operator=(Move rval);
 	bool operator==(Move rval) const;
 	bool operator!=(Move rval) const;
+	operator std::string() const;
 
 	// getters
 	unsigned int getToSquare() const;

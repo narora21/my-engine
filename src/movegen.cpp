@@ -54,9 +54,10 @@ void generateMoves(const Board& position, std::vector<Move>& pseudo_legals){
 		queenside_castle_to = c1;
 		kingside_castle_mask = inBetween(e1, h1);
 		queenside_castle_mask = inBetween(e1, a1);
-		kingside_thru_check = position.attacked(f1, opponent_color) ||
+		kingside_thru_check = position.attacked(e1, opponent_color) ||
+							  position.attacked(f1, opponent_color) ||
 							  position.attacked(g1, opponent_color);
-		queenside_thru_check = position.attacked(b1, opponent_color) ||
+		queenside_thru_check = position.attacked(e1, opponent_color) ||
 							   position.attacked(c1, opponent_color) ||
 							   position.attacked(d1, opponent_color);
 	}
@@ -78,9 +79,10 @@ void generateMoves(const Board& position, std::vector<Move>& pseudo_legals){
 		queenside_castle_to = c8;
 		kingside_castle_mask = inBetween(e8, h8);
 		queenside_castle_mask = inBetween(e8, a8);
-		kingside_thru_check = position.attacked(f8, opponent_color) ||
+		kingside_thru_check = position.attacked(e8, opponent_color) ||
+							  position.attacked(f8, opponent_color) ||
 							  position.attacked(g8, opponent_color);
-		queenside_thru_check = position.attacked(b8, opponent_color) ||
+		queenside_thru_check = position.attacked(e8, opponent_color) ||
 							   position.attacked(c8, opponent_color) ||
 							   position.attacked(d8, opponent_color);
 	}

@@ -8,6 +8,7 @@
 
 #include "move.h"
 #include <iostream>
+#include "board.h"
 
 /* ---- MOVE CONSTRUCTOR ---- */
 Move::Move(unsigned int to, unsigned int from, unsigned int flags){
@@ -24,6 +25,9 @@ bool Move::operator==(Move rval) const{
 }
 bool Move::operator!=(Move rval) const{
 	return m_move != rval.m_move;
+}
+Move::operator std::string() const{
+	return squareToString(getFromSquare()) + squareToString(getToSquare());
 }
 
 /* ---- GETTERS ---- */
