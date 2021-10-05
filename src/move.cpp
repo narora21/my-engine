@@ -14,20 +14,28 @@
 Move::Move(unsigned int to, unsigned int from, unsigned int flags){
 	//move =      4 flag bits 			  6 from bits		 6 to bits
 	m_move = ((flags & 0x0F) << 12) | ((from & 0x3F) << 6) | (to & 0x3F);
+	m_none = false;
+}
+Move::Move(){
+	m_move = 0u;
+	m_none = true;
 }
 
 /* ---- OPERATORS ---- */
-void Move::operator=(Move rval){
+void Move::operator=(const Move& rval){
 	m_move = rval.m_move;
+	m_none = rval.m_none;
 }
-bool Move::operator==(Move rval) const{
+bool Move::operator==(const Move& rval) const{
 	return m_move == rval.m_move;
 }
-bool Move::operator!=(Move rval) const{
+bool Move::operator!=(const Move& rval) const{
 	return m_move != rval.m_move;
 }
 Move::operator std::string() const{
-	return squareToString(getFromSquare()) + squareToString(getToSquare());
+	if(!m_none)
+		return squareToString(getFromSquare()) + squareToString(getToSquare());
+	return "None";
 }
 
 /* ---- GETTERS ---- */
@@ -56,6 +64,9 @@ void Move::setFlags(unsigned int flags){
 }
 
 /* ---- DECODE FLAGS ---- */
+bool Move::isNone() const{
+	return m_none;
+}
 bool Move::isCapture() const{
 	return (m_move & 0x4000) != 0;
 }

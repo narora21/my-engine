@@ -68,6 +68,7 @@ typedef struct{
 // parses a fen string into a Fen object
 // returns nullptr on failure
 Fen* parseFenString(std::string fen_string);
+bool isValidFenString(std::string fen_string);
 
 void testFen();
 

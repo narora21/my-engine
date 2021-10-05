@@ -21,6 +21,6 @@ int main(int argc, char* argv[]){
 	#endif // DEBUG END
 
 	std::cout << "Running the engine..." << std::endl;
-
+	runEngine();
 	return 0;
 }

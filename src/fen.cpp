@@ -453,22 +453,8 @@ Fen* parseFenString(std::string fen_string){
 	return f;
 }
 
-/* 
-//Debugging function 
-
-void testFen(){
-	std::string s = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1 ";
-	parseFenString(s);
-	std::cout << s << std::endl;
-	std::cout << "good input: " << !malformed_input << std::endl;
-	std::cout << "side to move: " << side << std::endl;
-	std::cout << "EP square: " << en_passant_target << std::endl;
-	std::cout << "half move: " << half_moves << std::endl;
-	std::cout << "full moves: " << num_moves << std::endl;
-	for(int i = 0; i < 4; i++)
-		std::cout << "castling rights: " << i << " " << castle_ability[i] << std::endl;
-	std::cout << "Ranks: " << std::endl;
-	for(int i = NUM_RANKS-1; i >= 0; i--)
-		std::cout << ranks[i] << std::endl;
+bool isValidFenString(std::string fen_string){
+	if(parseFenString(fen_string) == nullptr)
+		return false;
+	return true;
 }
-*/

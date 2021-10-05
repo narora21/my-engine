@@ -20,6 +20,7 @@ code	promotion:	capture:	special1:	special0:	kind of move:
 3			0			0			1			1		queenside castle
 4			0			1			0			0		captures
 5			0			1			0			1		ep-capture
+
 8			1			0			0			0		knight-promotion
 9			1			0			0			1		bishop-promotion
 10			1			0			1			0		rook-promotion
@@ -39,11 +40,12 @@ code	promotion:	capture:	special1:	special0:	kind of move:
 class Move{
 public:
 	Move(unsigned int to, unsigned int from, unsigned int flags);
+	Move();
 
 	// operators
-	void operator=(Move rval);
-	bool operator==(Move rval) const;
-	bool operator!=(Move rval) const;
+	void operator=(const Move& rval);
+	bool operator==(const Move& rval) const;
+	bool operator!=(const Move& rval) const;
 	operator std::string() const;
 
 	// getters
@@ -57,6 +59,7 @@ public:
 	void setFlags(unsigned int flags);
 
 	// decode flag meaning
+	bool isNone() const;
 	bool isCapture() const;
 	bool isPromotion() const;
 	bool isDoublePawnPush() const;
@@ -68,6 +71,7 @@ public:
 
 private:
 	unsigned int m_move;
+	bool m_none;
 };
 
 

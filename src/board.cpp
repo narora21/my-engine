@@ -620,3 +620,8 @@ unsigned int stringToSquare(std::string s){
 	unsigned int rank = s[1] - '1';
 	return file + 8*rank;
 }
+std::string moveToString(Move m){
+	if(!m.isNone())
+		return squareToString(m.getFromSquare()) + squareToString(m.getToSquare());
+	return "";
+}

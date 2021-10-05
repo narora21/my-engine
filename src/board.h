@@ -148,5 +148,6 @@ private:
 /* ---- HELPER FUNCTIONS ---- */
 std::string squareToString(unsigned int s);
 unsigned int stringToSquare(std::string s);
+std::string moveToString(Move m);
 
 #endif // BOARD_H
